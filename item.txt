@@ -1,0 +1,11 @@
+Lily White 100 101 60
+Lily Pink 125 102 60
+Rose Red 15 103 450
+Rose Yellow 50 104 100
+Rose White 25 105 250
+Rose Pink 45 106 30
+Orchid Blue 120 107 100
+Orchid Pink 140 108 325
+Gebera Yellow 90 109 200
+Gebera Purple 70 110 225
+Gypsy White 10 112 1000
