@@ -1,19 +1,255 @@
 #include<stdio.h>
-#include<string.h>
 #include<conio.h>
-#include<ctype.h>
+#include<windows.h>
+#include<string.h>
 #include<stdlib.h>
-#include <windows.h>
-int i;
-void total_ammount()
+int menu();
+void createaccount();
+void login();
+FILE *fp;
+struct user u,U;
+int choice,i;
+char fname[20],lname[20],uname[20],pss[20],C;
+struct user
 {
-    printf("Press any key to continue...");
-    getch();
+    char pass[20];
+    char username[20];
+    char fname[20];
+    char lname[20];
+};
+int welcome()
+{
+    printf(" * * *\t\t\t\t\t\t\t      * * *\n");
+    printf(" * * *\t\t\t\t\t\t\t      * * *\n");
+    printf(" *****\t\t\t\t\t\t\t      *****\n");
+    printf(" *****\t\t\t\t\t\t\t      *****\n");
+    printf("  ***\t\t\t\t\t\t\t       ***\n");
+    printf("   *\t\t#### Flower Shop Management System ####\t\t*\n");
+    printf("** * **\t\t\t\t\t\t\t     ** * **\n");
+    printf("** * **\t\t\t\t\t\t\t     ** * **\n");
+    printf("   *\t\t\t\t\t\t\t        *\n");
+    printf("   *\t\t\t\t\t\t\t        *\n\n\n");
+}
+int main()
+{
+    int a;
     system("cls");
-    menu();
+    welcome();
+    printf("\t1. User Panal\t\t\t2.Admin Panal\n");
+    printf("\n\t\t    Enter your choice: ");
+    scanf("%d",&a);
+    switch (a)
+        {
+        case 1:
+            system("cls");
+            printf("\n\t\t\tWelcome to the User Panal!\n");
+            userchoice();
+            userchoicelist();
+            break;
+
+        case 2:
+            system("cls");
+            printf("\n\t\t\tWelcome to the Admin Panal!\n");
+            adminv();
+            adminchoicelist();
+            break;
+
+        case 3:
+            exit(0);
+        default:
+            printf("Invalid Choice! \n");
+            break;
+        }
+}
+int userchoice()
+{
+        switch (menu())
+        {
+        case 1:
+            createaccount();
+            break;
+
+        case 2:
+            login();
+            break;
+
+        case 3:
+            main();
+        default:
+            printf("Invalid Choice! ");
+            break;
+        }
+
+
 }
 
-void menu()
+int menu()
+{
+    int ch;
+    printf("\n\n\t1. Create Account\n");
+    printf("\t2. Login\n");
+    printf("\t3. Exit to main\n");
+    printf("\n\t\t    Enter your choice :  ");
+    scanf("%d",&ch);
+    return ch;
+}
+void createaccount()
+{
+    struct user U;
+    FILE *fp;
+    system("cls");
+    printf("\n\t\t\t<--<<Create Account>>-->");
+    printf("\n\n");
+    printf("    Enter First Name: ");
+    fflush(stdin);
+    gets(U.fname);
+    printf("\n");
+    printf("    Enter Last Name: ");
+    gets(U.lname);
+    printf("\n");
+    printf("    Enter Username: ");
+    scanf("%s",U.username);
+    printf("\n");
+    printf("    Enter Password: ");
+    scanf("%s",U.pass);
+    fp = fopen ("username.txt", "wb+");
+    if (fp == NULL)
+    {
+        printf("\nError opened file\n");
+        exit (1);
+    }
+    fwrite(&U, sizeof(struct user), 1, fp);
+    fclose (fp);
+    system("cls");
+    printf("\n\t\t\tAccount Created Successfully.");
+    printf("\n\n\t\t\t\t\t\t\tPress any key to continue...");
+    getch();
+    system("cls");
+    login();
+}
+void login()
+{
+    char uname[20],pss[20];
+    FILE *fp;
+    struct user u;
+    system("cls");
+    printf("\n\t\t\t<<LOGIN TO YOUR ACCOUNT>>\n\n");
+    printf(" Enter Username: ");
+    scanf("%s",uname);
+    printf("\n");
+    printf(" Enter Password: ");
+    scanf("%s",pss);
+    fp=fopen("username.txt","rb+");
+    if(fp==NULL)
+    {
+        printf("\"File not found\"");
+        return 1;
+    }
+    while(fread(&u, sizeof(struct user), 1, fp)){
+        if(strcmp(uname,u.username) == 0 && strcmp(pss,u.pass)==0)
+        {
+            printf(" \n Username And Password is Correct.\n");
+            printf(" Press any key to continue...");
+            getch();
+            printf("\n\n\t\t\t\t Welcome %s %s ", u.fname,u.lname);
+            getch();
+        }
+        else
+        {
+            printf("\n Username And Password is Incorrect.\n\n");
+            printf(" Press any key to continue...");
+            getch();
+        }
+    }
+    fclose(fp);
+    system("cls");
+}
+int userchoicelist()
+{
+    system("cls");
+    printf("\t\t\t* MAIN MENU *\n\n");
+    printf("\t1. Flower List\n\t2. Search Flower\n\t3. Add to Cart\n\t4. Place Order\n\t5. Payment Gateway\n\t6. About Us\n\t7. Exist Program\n");
+    printf("\n\nEnter your choice between 1 to 7: ");
+    scanf("%d", &choice);
+    system("cls");
+    switch(choice)
+    {
+    case 1:
+        read_item();
+        userchoicelist();
+        break;
+    case 2:
+        Search_Flower();
+        userchoicelist();
+        break;
+    case 3:
+        Add_to_Cart();
+        break;
+    case 4:
+        Place_Order();
+        break;
+    case 5:
+        Payment_Getaway();
+        break;
+    case 6:
+        About_Us();
+        userchoicelist();
+        break;
+    case 7:
+        exit(0);
+        break;
+    default:
+        printf("Invalid Choice!");
+        getch();
+    }
+}
+void adminv()
+{
+    userchoice();
+    printf("Give the pin code of the shop to verify yourself!\n");
+    int a=0,i=0;
+    char c=' ',code[10],pass[10]="3091014";
+    do
+    {
+
+        printf("\n\t\tPin Code: ");
+        while(i<10)
+        {
+            code[i]=getch();
+            c=code[i];
+            if(c==13)
+                break;
+            else
+                printf("*");
+            i++;
+        }
+        code[i]='\0';
+        i=0;
+        if(strcmp(code,"3091014")==0)
+        {
+            printf("\nWelcome to the information editing panal!!!!");
+            printf("\nPress enter to continue...");
+            getch();
+            break;
+        }
+        else
+        {
+            printf("\nSorry!!!! You entry is denied.");
+            a++;
+            getch();
+
+        }
+    } while(a<=2);
+    if (a>2)
+    {
+        printf("\nSorry you have entered the wrong username and password for four times!!!");
+
+        getch();
+
+    }
+    system("cls");
+}
+void adminchoicelist()
 {
     system("cls");
     int choice;
@@ -31,191 +267,41 @@ void menu()
     printf("\n\t1. Add Items");
     printf("\n\t2. Delete Items");
     printf("\n\t3. View Items");
-    printf("\n\t4. Total Stock");
-    printf("\n\t5. Edit Items");
-    printf("\n\t6. Exit");
-    printf("\n\nEnter your choice between 1 to 6: ");
+    printf("\n\t4. Edit Items");
+    printf("\n\t5. Exit");
+    printf("\n\nEnter your choice between 1 to 5: ");
     scanf("%d", &choice);
     system("cls");
     switch(choice)
     {
     case 1:
         add_item();
+        adminchoicelist();
         break;
     case 2:
         delete_product();
+        adminchoicelist();
         break;
     case 3:
         read_item();
+        adminchoicelist();
         break;
     case 4:
-        total_ammount();
+        edit_item();
+        adminchoicelist();
         break;
     case 5:
-        edit_item();
-        break;
-    case 6:
         main();
         break;
     default:
-        printf("Invalid Choice! System Exit...");
+        printf("Invalid Choice!");
         getch();
     }
-
 }
-int welcome()
+void gotoxy(short x, short y)
 {
-    printf(" * * *\t\t\t\t\t\t\t      * * *\n");
-    printf(" * * *\t\t\t\t\t\t\t      * * *\n");
-    printf(" *****\t\t\t\t\t\t\t      *****\n");
-    printf(" *****\t\t\t\t\t\t\t      *****\n");
-    printf("  ***\t\t\t\t\t\t\t       ***\n");
-    printf("   *\t\t#### Flower Shop Management System ####\t\t*\n");
-    printf("** * **\t\t\t\t\t\t\t     ** * **\n");
-    printf("** * **\t\t\t\t\t\t\t     ** * **\n");
-    printf("   *\t\t\t\t\t\t\t        *\n");
-    printf("   *\t\t\t\t\t\t\t        *\n\n\n");
-}
-int choicelist()
-{
-    printf("\t\t\t* MAIN MENU *\n\n");
-    printf("\t1. User System\t\t\t2. Flower Category\n");
-    printf("\t3. Search Flower\t\t4. Flower List\n");
-    printf("\t5. Add to Cart\t\t\t6. Place Order\n");
-    printf("\t7. Payment Gateway\t\t8. Information Edit\n");
-    printf("\t9. About Us\t\t\t10. Exist Program\n");
-}
-int User_System()
-{
-    FILE *fl;
-    fl = fopen("registration.txt", "w+");
-    if (fl == NULL)
-    {
-        printf("File does not exists \n");
-        return 0;
-    }
-    char c1;
-    char name[30], password[30], address[100],number[15];
-    printf("\na. Log in\nb. Registration\n");
-    printf("Enter your choice: ");
-    scanf("%c",&c1);
-    getchar();
-    if(c1=='a')
-    {
-        fprintf(fl, "Login:\n");
-        printf("Enter Number: ");
-        gets(number);
-        fprintf(fl, "Number= %s\n", number);
-        printf("Enter Password: ");
-        gets(password);
-        fprintf(fl, "Password= %s\n", password);
-    }
-    else if(c1=='b')
-    {
-        fprintf(fl, "Registration:\n");
-        printf("Enter Name: ");
-        gets(name);
-        fprintf(fl, "Name= %s\n", name);
-        printf("Enter Number: ");
-        gets(number);
-        fprintf(fl, "Number= %s\n", number);
-        printf("Enter Password: ");
-        gets(password);
-        fprintf(fl, "Password= %s\n", password);
-        printf("Enter Address: ");
-        gets(address);
-        fprintf(fl, "Address= %s\n", address);
-    }
-    else
-        printf("Invalid command\n");
-    main();
-}
-void admin()
-{
-
-    int a=0,i=0;
-    char uname[10],c=' ';
-    char pword[10],code[10];
-    char user[10]="admin";
-    char pass[10]="entry";
-    do
-    {
-
-        printf("\n\t--------------------LOGIN--------------------");
-        printf("\n\n\t\tUSERNAME: ");
-        scanf("%s", &uname);
-        printf("\n\t\tPASSWORD: ");
-        while(i<10)
-        {
-            pword[i]=getch();
-            c=pword[i];
-            if(c==13)
-                break;
-            else
-                printf("*");
-            i++;
-        }
-        pword[i]='\0';
-        i=0;
-        if(strcmp(uname,"admin")==0 && strcmp(pword,"entry")==0)
-        {
-            printf("\nWelcome to the information editing panal!!!!");
-            printf("\nPress enter to continue...");
-            getch();
-            break;
-        }
-        else
-        {
-            printf("\nSorry!!!! You entry is denied.");
-            a++;
-            getch();
-
-        }
-    }
-    while(a<=2);
-    if (a>2)
-    {
-        printf("\nSorry you have entered the wrong username and password for four times!!!");
-
-        getch();
-
-    }
-    system("cls");
-}
-int Flower_Category()
-{
-    char ch, c2;
-    FILE *season;
-    season=fopen("season.txt","r");
-    FILE *color;
-    color=fopen("color.txt","r");
-    printf("\na. Flowers\nb. Packaging type\n");
-    printf("Enter your choice: ");
-    scanf("%c",&c2);
-    if(c2=='a')
-    {
-        read_item();
-    }
-    else if(c2=='b')
-    {
-        if(color==NULL)
-            printf("File doesn't exist");
-        else
-        {
-            printf("\n");
-            while(!feof(color))
-            {
-                ch=fgetc(color);
-                printf("%c",ch);
-            }
-        }
-    }
-    else
-        printf("Invalid command\n");
-    fclose(season);
-    fclose(color);
-    printf("\nClick enter to continue....");
-    getch();
+	COORD pos ={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 }
 struct item
 {
@@ -246,7 +332,6 @@ void add_item()
             printf("\xdb");
         }
 		int ID;
-
 		fp = fopen("item.txt","a+");
 
 		if((fp = fopen("item.txt","a+"))!=NULL)
@@ -269,12 +354,8 @@ void add_item()
 			printf("\nCode\t : ");
 			scanf("%i",&st.productid);
 		}
-
-
 		do
 		{
-
-
 			fflush(stdin);
 			printf("\nFlower's Name\t : ");
 			gets(st.name);
@@ -299,6 +380,8 @@ void add_item()
 			}
 		}while(!valid);
 
+
+
 			do
 		{
 			char color[40];
@@ -306,7 +389,6 @@ void add_item()
 			printf("\nColor\t : ");
 			gets(st.color);
 			st.color[0]=toupper(st.color[0]);
-
 			for (index=0; index<strlen(st.color); ++index)
 			{
 				if(isalpha(st.color[index]))
@@ -325,8 +407,6 @@ void add_item()
 
 			}
 		}while(!valid);
-
-
 		do
 			{
 				printf("\nPrice per stick or branch: ");
@@ -339,7 +419,6 @@ void add_item()
             printf("\nQuantity available \t: ");
             scanf("%i",&st.qnt);
 
-
 		fp=fopen("item.txt","a");
 		fprintf(fp,"\n%s %s %i %i %i", st.name, st.color,st.price, st.productid,st.qnt);
 		fclose(fp);
@@ -348,6 +427,80 @@ void add_item()
 	}
 	while((c = getch()) =='\r');
 	menu();
+}
+void Search_Flower()
+{
+	char target[40];
+	int found=0;
+	FILE *sfile;
+	sfile=fopen("item.txt","r");
+	printf("\nEnter flower name to search: ");
+	fflush(stdin);
+	gets(target);
+	target[0]=toupper(target[0]);
+	while (!feof(sfile) && found==0)
+	{
+		fscanf(sfile,"%s %s %i %i %i", st.name, st.color, &st.price, &st.productid,&st.qnt);
+		if(strcmp(target, st.name)==0)
+		{
+			found=1;
+		}
+	}
+
+	if(found)
+	{
+		printf("\n Record found");
+		printf("\nFlower's Name\t:%s  \nColor\t\t:%s \nPrice\t\t:%i \nID\t\t:%i \nQuantity\t:%i", st.name, st.color, st.price, st.productid, st.qnt);
+
+	}
+	else
+		printf("No Record found");
+		fclose(sfile);
+		printf("\n\nPress enter to go back to Main Menu!");
+		getch();
+		userchoicelist();
+
+}
+void delete_product()
+{
+    char target[40];
+    int found=0;
+    FILE *sfile, *tfile;
+    sfile=fopen("item.txt","r");
+    tfile=fopen("temp.txt","w+");
+    printf("\n Enter name to Delete: ");
+    fflush(stdin);
+    scanf("%s",target);
+    target[0]=toupper(target[0]);
+    while (fscanf(sfile,"%s %s %i %i %i\n",st.name,st.color, &st.price,&st.productid,&st.qnt)!=EOF)
+    {
+        if(strcmp(target,st.name)==0)
+        {
+            found=1;
+        }
+        else
+        {
+            fprintf(tfile,"%s %s %i %i %i\n", st.name,st.color, st.price,st.productid,st.qnt);
+        }
+    }
+    if(!found)
+    {
+        printf("\n Record not Found");
+        getch();
+        menu();
+    }
+    else
+    {
+        printf("\n Record deleted");
+    }
+    fclose(sfile);
+    fclose(tfile);
+    remove("item.txt");
+    rename("temp.txt","item.txt");
+
+    printf("\nPress any key to go back to editing panal!");
+    getch();
+    menu();
 }
 void read_item()
 {
@@ -427,85 +580,8 @@ void read_item()
 			printf("\xdb");
 	}
 	fclose(f);
-}
-void gotoxy(short x, short y)
-{
-	COORD pos ={x,y};
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
-}
-void Search_Flower()
-{
-	char target[40];
-	int found=0;
-	FILE *sfile;
-	sfile=fopen("item.txt","r");
-	printf("\nEnter flower name to search:");
-	fflush(stdin);
-	gets(target);
-	target[0]=toupper(target[0]);
-	while (!feof(sfile) && found==0)
-	{
-		fscanf(sfile,"%s %s %i %i %i", st.name, st.color, &st.price, &st.productid,&st.qnt);
-		if(strcmp(target, st.name)==0)
-		{
-			found=1;
-		}
-	}
-
-	if(found)
-	{
-		printf("\n Record found");
-		printf("\nFlower's Name\t:%s  \nColor\t\t:%s \nPrice\t\t:%i \nID\t\t:%i \nQuantity\t:%i", st.name, st.color, st.price, st.productid, st.qnt);
-
-	}
-	else
-		printf("No Record found");
-		fclose(sfile);
-		printf("\n\nPress enter to go back to Main Menu!");
-		getch();
-		main();
-
-}
-void delete_product()
-{
-    char target[40];
-    int found=0;
-    FILE *sfile, *tfile;
-    sfile=fopen("item.txt","r");
-    tfile=fopen("temp.txt","w+");
-    printf("\n Enter name to Delete: ");
-    fflush(stdin);
-    scanf("%s",target);
-    target[0]=toupper(target[0]);
-    while (fscanf(sfile,"%s %s %i %i %i\n",st.name,st.color, &st.price,&st.productid,&st.qnt)!=EOF)
-    {
-        if(strcmp(target,st.name)==0)
-        {
-            found=1;
-        }
-        else
-        {
-            fprintf(tfile,"%s %s %i %i %i\n", st.name,st.color, st.price,st.productid,st.qnt);
-        }
-    }
-    if(!found)
-    {
-        printf("\n Record not Found");
-        getch();
-        menu();
-    }
-    else
-    {
-        printf("\n Record deleted");
-    }
-    fclose(sfile);
-    fclose(tfile);
-    remove("item.txt");
-    rename("temp.txt","item.txt");
-
-    printf("\nPress any key to go back to editing panal!");
-    getch();
-    menu();
+	printf("\nPress any key to continue...");
+	getch();
 }
 void edit_item()
 {
@@ -536,7 +612,7 @@ void edit_item()
 				a=1;
 				printf("\n\t\xdb\xdb\xdb\xdb\xdb Record Found \xdb\xdb\xdb\xdb\xdb");
 				printf("\nItem's Name\t\t: %s",st.name);
-				printf("\nItems's Brand\t\t: %s",st.color);
+				printf("\nItems's Color\t\t: %s",st.color);
 				printf("\nPrice\t\t\t: %i",st.price);
 				printf("\nItem's Code\t\t: %i",st.productid);
 				printf("\nItem's Quantity\t\t:%i",st.qnt);
@@ -568,16 +644,14 @@ void edit_item()
 
 					}
 				}while(!valid);
-
-
-
 				do
 				{
 					char color[40];
 					fflush(stdin);
-					printf("\nNew Item's Brand\t\t:");
+					printf("\nNew Item's Color\t:");
 					gets(st.color);
 					st.color[0]=toupper(st.color[0]);
+
 					for (index=0; index<strlen(st.color); ++index)
 					{
 						if(isalpha(st.color[index]))
@@ -599,7 +673,7 @@ void edit_item()
 
 					do
 			{
-				printf("\nNew Price :");
+				printf("\nNew Price :\t");
 				scanf("%i",&st.price);
 				if(st.price<10 || st.price>5000)
 				{
@@ -607,10 +681,10 @@ void edit_item()
 				}
 			}while(st.price<10 || st.price>5000);
 
-				printf("\nEnter New Item's Code\t\t:");
+				printf("\nEnter New Item's Code\t:");
 				scanf("%i",&st.productid);
 
-				printf("\nNew Quantity \t:");
+				printf("\nNew Quantity :\t");
 				scanf("%i",&st.qnt);
 
 				printf("Press 'y' to edit the existing record or any key to cancel...");
@@ -639,90 +713,22 @@ void edit_item()
 		rename("temp.txt","item.txt");
 		getch();
 	}
-	menu();
+	adminchoicelist();
 }
-int Add_to_Cart()
-{
-
-}
-int Place_Order()
-{
-
-}
-int Payment_Getaway()
-{
-
-}
-int Information_Edit()
-{
-    admin();
-    menu();
-}
-
-int About_Us()
+void Add_to_Cart(){}
+void Place_Order(){}
+void Payment_Getaway(){}
+void About_Us()
 {
     system("cls");
-    printf("About us:\n\n");
-    printf("Name: Tamima Nishat, Email: nisattamima44cse@gmail.com\n");
-    printf("Afrina Akter Mim, Email: afrina141mim@gmail.com\n");
-    printf("Md. Hasibul Islam, Email: hasibislam2k18@gmail.com\n\n");
-    printf("Address: Rupnagar, Mirpur, Dhaka-1216\n");
+    printf("\n\t\t\t--<<About us>>--\n\n");
+    printf("Name:\t\t\t\t\tEmail:");
+    printf("\nTamima Nishat\t\t\t\tnisattamima44cse@gmail.com");
+    printf("\nAfrina Akter Mim\t\t\tafrina141mim@gmail.com");
+    printf("\nMd. Hasibul Islam\t\t\thasibislam2k18@gmail.com");
+    printf("\n\nAddress: \nRupnagar, Mirpur, Dhaka-1216\n");
     printf("Contact Number: +8801744253687\n\n");
-    printf("Press enter to go back to Main Menu! ");
+    printf("Press any key to continue...");
     getch();
 }
-int main()
-{
-    int c;
-    system("cls");
-    welcome();
-    choicelist();
-    printf("\nEnter your command: ");
-    scanf("%d",&c);
-    getchar();
-    switch (c)
-    {
-    case 1:
-        User_System();
-        break;
-    case 2:
-        Flower_Category();
-        break;
-    case 3:
-        Search_Flower();
-        break;
-    case 4:
-        read_item();
-        printf("\n\nPress enter to go back to Main Menu!");
-        getch();
-        main();
-        break;
-    case 5:
-        Add_to_Cart();
-        break;
-    case 6:
-        Place_Order();
-        break;
-    case 7:
-        Payment_Getaway();
-        break;
-    case 8:
-        system("cls");
-        Information_Edit();
-        menu();
-        //system("cls");
-        break;
-    case 9:
-        About_Us();
-        main();
-        break;
-    case 10:
-        break;
-    default:
-        printf("Please choose between 1 - 10.\n");
-        break;
-    }
-    return 0;
-}
-
 
