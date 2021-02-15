@@ -3,6 +3,7 @@
 #include<windows.h>
 #include<string.h>
 #include<stdlib.h>
+void verify();
 int menu();
 void createaccount();
 void login();
@@ -159,6 +160,7 @@ void login()
             printf("\n Username And Password is Incorrect.\n\n");
             printf(" Press any key to continue...");
             getch();
+            exit(0);
         }
     }
     fclose(fp);
@@ -242,7 +244,7 @@ void adminv()
     } while(a<=2);
     if (a>2)
     {
-        printf("\nSorry you have entered the wrong username and password for four times!!!");
+        printf("\nSorry you have entered the wrong pin code for four times!!!");
 
         getch();
 
@@ -426,7 +428,7 @@ void add_item()
 
 	}
 	while((c = getch()) =='\r');
-	menu();
+	adminchoicelist();
 }
 void Search_Flower()
 {
@@ -500,7 +502,7 @@ void delete_product()
 
     printf("\nPress any key to go back to editing panal!");
     getch();
-    menu();
+    adminchoicelist();
 }
 void read_item()
 {
