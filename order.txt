@@ -1,0 +1,9 @@
+Name: Lily 	Color: White 	Unit Price: 110 	ID: 101 	Ordered Quantity: 5 	Total price: 550
+Name: Rose 	Color: White 	Unit Price: 25 	ID: 105 	Ordered Quantity: 10 	Total price: 250
+Total price: 800
+Order code: 8800
+Name: Lily 	Color: White 	Unit Price: 110 	ID: 101 	Ordered Quantity: 2 	Total price: 220
+Name: Rose 	Color: Red 	Unit Price: 15 	ID: 103 	Ordered Quantity: 4 	Total price: 60
+Name: Rose 	Color: White 	Unit Price: 25 	ID: 105 	Ordered Quantity: 5 	Total price: 125
+Total price: 405
+Order code: 4455
